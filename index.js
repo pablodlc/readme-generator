@@ -3,7 +3,9 @@ const fs = require('fs');
 const { writeFile } = require('./utils/generateMarkdown.js');
 const generateMarkdown = require('./src/readme-template');
 
+// I borrowed heavily from the module project, "Portfolio Generator".  Here's the first bit of evidence, a function with the same name from the project. It greets the user then Inquirer takes over and asks the user for a bunch of information about the project that requires a README file
 const promptUser = () => {
+    // Using `console.log` to greet the user before the interrogation begins. The prompts start off as required.  The app will not proceed without entries until after the Description section
     console.log(`
 -----------------------------------
 Thank you for choosing READ-arator!
@@ -90,6 +92,7 @@ made with ❤️   by pablodlc
                 }
             }
         },
+        // The first optional section. This is the blueprint for the remaining optional sections.
         {
             type: 'confirm',
             name: 'confirmInstall',
@@ -100,6 +103,7 @@ made with ❤️   by pablodlc
             type: 'input',
             name: 'install',
             message: 'Provide clear directions on installing your application:',
+            // this is checking to see if the user wants to add installation instructions.  If so, then they're asked to enter their instructions.
             when: ({ confirmInstall }) => {
                 if (confirmInstall) {
                     return true;
@@ -184,14 +188,18 @@ made with ❤️   by pablodlc
     ])
 }
 
+// Here we start the app, calling`promptUser()`, 
 promptUser()
+    // When that's done, it calls `generateMarkdown()` passing in the data from Inquirer 
     .then(readmeData => {
         return generateMarkdown(readmeData);
     })
     .then(templateData => {
+        // Write file writes the data to a README file and saves it in the "/dist" folder.
         return writeFile(templateData)
     })
     .then(writeFileResponse => {
+        // Announcing the README is ready
         console.log(`
 ---------------------------------------------------
 Your README.md file is ready in the "/dist" folder!

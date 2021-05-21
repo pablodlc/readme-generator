@@ -1,3 +1,4 @@
+// This function creates the ToC list item for Installation if data is passed in through the `text` parameter.  This is the template for all of the headers to follow.  I wanted this because I didn't want static ToC list items if the user didn't want them included.
 const generateInstallHeader = (text) => {
     if (!text) {
         return '';
@@ -7,6 +8,7 @@ const generateInstallHeader = (text) => {
     `
 }
 
+// This is the blueprint for generating the optional sections.  It takes the install data through the `installText` parameter, creates a header for the section and the content from the user below that.
 const generateInstall = installText => {
     if (!installText) {
         return '';
@@ -38,7 +40,6 @@ ${usageText}
     `;
 }
 
-// ![${ license }](https://img.shields.io/badge/license-${license}-blue)
 
 // TODO: Create a function that returns a license badge based on which license is passed in
 // If there is no license, return an empty string
@@ -46,6 +47,7 @@ const generateLicenseBadge = licenseText => {
     if (!licenseText) {
         return '';
     }
+    // creates the badge using a template literal in a URL.
     return `
 ![${licenseText}](https://img.shields.io/badge/license-${licenseText}-blue)
     `
@@ -63,9 +65,11 @@ const generateLicenseHeader = (licenseText) => {
 // TODO: Create a function that returns the license link
 // If there is no license, return an empty string
 const generateLicense = licenseText => {
+    // If the user chose to not include a license, there's no `licenseText`, and the program moves on.
     if (!licenseText) {
         return '';
     }
+    // Here is the license data.  It matches the license name, returns a header for the License section and information about the license.
     if (licenseText === 'GNU_GPLv3') {
         return `
 ## License
@@ -103,8 +107,6 @@ A short and simple permissive license with conditions only requiring preservatio
     }
 }
 
-// TODO: Create a function that returns the license section of README
-// If there is no license, return an empty string
 const generateContributorsHeader = (contributorsText) => {
     if (!contributorsText) {
         return '';
@@ -147,6 +149,7 @@ ${testText}
 
 // TODO: Create a function to generate markdown for README
 function generateMarkdown(readmeData) {
+    // Using a template literal, I'm plugging in all the user's data from the `readmeData` object, grabbing what I need in the order in which I want it to appear.  Also calling methods within the template literal to populate the README accordingly
     return `
 # ${readmeData.title}
 ## Description
@@ -177,5 +180,5 @@ ${readmeData.title} made with ❤️ by ${readmeData.name}
 `;
 }
 
-
+// Exporting `generateMarkdown()`
 module.exports = generateMarkdown;

@@ -3,6 +3,7 @@ const fs = require('fs');
 // writing files
 const writeFile = fileContent => {
     return new Promise((resolve, reject) => {
+        // taking the `generateMarkdown()` data, writing it to a file called README.md, and saving it in the "/dist" folder.
         fs.writeFile('./dist/README.md', fileContent, err => {
             if (err) {
                 reject(err);
@@ -17,4 +18,5 @@ const writeFile = fileContent => {
     });
 };
 
+// Exporting `writeFile()`
 module.exports = { writeFile };
