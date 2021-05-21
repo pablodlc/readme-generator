@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const { writeFile } = require('./utils/generateMarkdown.js');
-const generateReadme = require('./src/readme-template');
+const generateMarkdown = require('./src/readme-template');
 
 const promptUser = () => {
     return inquirer.prompt([
@@ -71,12 +71,6 @@ const promptUser = () => {
             }
         },
         {
-            type: 'checkbox',
-            name: 'languages',
-            message: 'What did you build this project with? (Check all that apply)',
-            choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node']
-        },
-        {
             type: 'input',
             name: 'description',
             message: 'Enter a detailed description of your application.',
@@ -126,10 +120,23 @@ const promptUser = () => {
             }
         },
         {
+            type: 'confirm',
+            name: 'confirmLicense',
+            message: 'Would you like to add a license to your application',
+            default: true
+        },
+        {
             type: 'list',
             name: 'license',
-            message: 'What license are you using for your application?',
-            choices: ['MIT License', 'ISC License', 'Apache License 2.0', 'GNU General Public License v2.0', 'GNU General Public License v3.0']
+            message: 'What license have you chosen for your application?',
+            choices: ['GNU_GPLv3', 'GNU_LGPLv3', 'Mozilla_Public_License_2', 'Apache_License_2', 'MIT_License'],
+            when: ({ confirmLicense }) => {
+                if (confirmLicense) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         {
             type: 'confirm',
@@ -172,7 +179,8 @@ const promptUser = () => {
 
 promptUser()
     .then(readmeData => {
-        return generateReadme(readmeData);
+        console.log(readmeData);
+        return generateMarkdown(readmeData);
     })
     .then(templateData => {
         console.log("hello!");
@@ -180,10 +188,6 @@ promptUser()
     })
     .then(writeFileResponse => {
         console.log(writeFileResponse);
-        return copyFile();
-    })
-    .then(copyFileResponse => {
-        console.log(copyFileResponse);
     })
     .catch(err => {
         console.log(err)
