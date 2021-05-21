@@ -4,6 +4,13 @@ const { writeFile } = require('./utils/generateMarkdown.js');
 const generateMarkdown = require('./src/readme-template');
 
 const promptUser = () => {
+    console.log(`
+-----------------------------------
+Thank you for choosing READ-arator!
+made with ❤️   by pablodlc
+-----------------------------------
+`)
+
     return inquirer.prompt([
         {
             type: "input",
@@ -179,15 +186,17 @@ const promptUser = () => {
 
 promptUser()
     .then(readmeData => {
-        console.log(readmeData);
         return generateMarkdown(readmeData);
     })
     .then(templateData => {
-        console.log("hello!");
         return writeFile(templateData)
     })
     .then(writeFileResponse => {
-        console.log(writeFileResponse);
+        console.log(`
+---------------------------------------------------
+Your README.md file is ready in the "/dist" folder!
+---------------------------------------------------
+`)
     })
     .catch(err => {
         console.log(err)
